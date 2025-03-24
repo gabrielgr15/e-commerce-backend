@@ -6,7 +6,7 @@ class Product(models.Model):
     name = models.CharField(max_length=255)
     price = models.FloatField()
     description = models.TextField()
-    categories = models.ManyToManyField('Category', related_name='products')
+    categories = models.ManyToManyField('Category', related_name='list_products')
     #image =
 
     def __str__(self):
@@ -15,7 +15,7 @@ class Product(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=255)
-    products = models.ManyToManyField(Product, related_name='categories')
+    products = models.ManyToManyField(Product, related_name='list_categories')
 
     def __str__(self):
         return self.name
