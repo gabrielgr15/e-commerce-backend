@@ -23,7 +23,7 @@ class UserRegistrationView(CreateAPIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
         verification_token = generateToken()
-        user_verificiation = UserVerificationModel(user=user, token=token)
+        user_verificiation = UserVerificationModel(token=verification_token, user=user)
         user_verificiation.save()
         sendVerificationEmail(user, verification_token, request)
         token = RefreshToken.for_user(user=user)
@@ -67,7 +67,7 @@ class UserVerificationView(APIView):
         try:
             user_verification = UserVerificationModel.objects.get(token=url_token)
             created = user_verification.created
-            now = timezone.now
+            now = timezone.now()
             expiration_time = timedelta(hours=24)
             if now - created > expiration_time:
                 return Response({'message': 'The token has expired, please request a new verification email'},
